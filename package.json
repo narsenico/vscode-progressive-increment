@@ -1,0 +1,71 @@
+{
+    "name": "vscode-progressive-increment",
+    "displayName": "VSCode Progressive Increment",
+    "description": "Increments numeric values found in selection",
+    "version": "1.0.0",
+    "publisher": "narsenico",
+    "icon": "icon.png",
+    "engines": {
+        "vscode": "^1.26.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/narsenico/vscode-progressive-increment.git"
+    },
+    "bugs": {
+        "url": "https://github.com/narsenico/vscode-progressive-increment/issues",
+        "email": "not_amon-dev@yahoo.it"
+    },
+    "categories": [
+        "Formatters",
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.incrementBy1",
+        "onCommand:extension.incrementBy10"
+    ],
+    "license": "MIT",
+    "main": "./extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.incrementBy1",
+                "title": "Progressive: increment by 1"
+            },
+            {
+                "command": "extension.incrementBy10",
+                "title": "Progressive: increment by 10"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.incrementBy1",
+                "key": "ctrl+alt+i",
+                "mac": "cmd+alt+i",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.incrementBy10",
+                "key": "ctrl+alt+shift+i",
+                "mac": "cmd+alt+shift+i",
+                "when": "editorTextFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test",
+        "vscode:prepublish": "webpack --mode production",
+        "compile": "webpack --mode none",
+        "watch": "webpack --mode none --watch"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.25",
+        "eslint": "^5.16.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.33",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.3.0"
+    }
+}

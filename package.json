@@ -57,7 +57,9 @@
         "test": "node ./node_modules/vscode/bin/test",
         "vscode:prepublish": "webpack --mode production",
         "compile": "webpack --mode none",
-        "watch": "webpack --mode none --watch"
+        "watch": "webpack --mode none --watch",
+        "vsce:package": "vsce package",
+        "vsce:publish": "vsce publish"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",

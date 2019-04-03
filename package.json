@@ -21,31 +21,31 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.incrementBy1",
-        "onCommand:extension.incrementBy10"
+        "onCommand:progressive.incrementBy1",
+        "onCommand:progressive.incrementBy10"
     ],
     "license": "MIT",
     "main": "./extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.incrementBy1",
+                "command": "progressive.incrementBy1",
                 "title": "Progressive: increment by 1"
             },
             {
-                "command": "extension.incrementBy10",
+                "command": "progressive.incrementBy10",
                 "title": "Progressive: increment by 10"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.incrementBy1",
+                "command": "progressive.incrementBy1",
                 "key": "ctrl+alt+i",
                 "mac": "cmd+alt+i",
                 "when": "editorTextFocus"
             },
             {
-                "command": "extension.incrementBy10",
+                "command": "progressive.incrementBy10",
                 "key": "ctrl+alt+shift+i",
                 "mac": "cmd+alt+shift+i",
                 "when": "editorTextFocus"

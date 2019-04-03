@@ -81,10 +81,10 @@ function activate(context) {
     console.log('Running extension "Progressive: increment by"');
 
     // implemento i comandi definiti nel package.json
-    context.subscriptions.push(vscode.commands.registerCommand('extension.incrementBy1', function () {
+    context.subscriptions.push(vscode.commands.registerCommand('progressive.incrementBy1', function () {
         execIncrementBy(1);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.incrementBy10', function () {
+    context.subscriptions.push(vscode.commands.registerCommand('progressive.incrementBy10', function () {
         execIncrementBy(10);
     }));
 }

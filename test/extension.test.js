@@ -91,7 +91,7 @@ suite("Extension Tests", function () {
     test("Select all and increments by 1", async function () {
         await exec(selectAllAndIncrements);
     });
-    test("Split selection and increments by 1", async function () {
+    test("Split into selections and increments by 1", async function () {
         await exec(splitSelectionAndIncrements);
     });
 });

@@ -1,7 +1,27 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/*!
+ * vscode-progressive-increment
+ * https://github.com/narsenico/vscode-progressive-increment
+ *
+ * Copyright (c) 2019, Gianfranco Caldi.
+ * Released under the MIT License.
+ */
 const vscode = require('vscode');
 
+/**
+ * Incrementa progressivamente tutte i numeri interi trovati nelle selezioni.
+ * Quindi se il primo numero trovato è 0, questo verrà portato a 0 + increment.
+ * Per i numeri successivi non importa il loro valore attuale, verranno sempre incrementati
+ * rispetto al numero precedente.
+ * Se possibile cerca sempre di mantenere la lunghezza del numero originale nel caso fillando con 
+ * degli '0'.
+ * Es: 0 0 0 => 1 2 3
+ * Es: 00 00 00 => 01 02 03
+ * Es: 0 10 12 => 1 02 03
+ * 
+ * @param {Number} increment valore numerico di incremento
+ * @returns {Promise|undefined} ritorna una promessa se ci sono delle selezioni
+ * in cui eseguire l'opearazione, altirmenti undefined
+ */
 function execIncrementBy(increment) {
     const editor = vscode.window.activeTextEditor;
     if (editor && editor.selections && editor.selections.length > 0) {
@@ -20,9 +40,9 @@ function execIncrementBy(increment) {
                     }
                     let val = (refValue += increment).toString();
                     // se il valore incrementato ha una lunghezza inferiore della stringa nn
-                    // significa che nn è preceduta da '0'
+                    // presumo che nn sia preceduta da '0'
                     if (val.length < nn.length) {
-                        // aggiungo '0' davanti al valore
+                        // aggiungo tanti '0' davanti al valore
                         val = Array(nn.length - val.length).fill('0').join('') + val;
                     }
                     return val;
@@ -44,12 +64,9 @@ function execIncrementBy(increment) {
 // your extension is activated the very first time the command is executed
 function activate(context) {
 
-    // // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // // This line of code will only be executed once when your extension is activated
-    // console.log('Running extension "Progressive: increment by"');
-
     // implemento i comandi definiti nel package.json
-    // i comandi devono ritornare sempre altrimenti vscode non sa quando finiscono (e i test non funzionano)
+    // i comandi devono ritornare sempre altrimenti vscode non sa quando finiscono 
+    // (e i test non funzionano)
     context.subscriptions.push(vscode.commands.registerCommand('progressive.incrementBy1', function () {
         return execIncrementBy(1);
     }));
@@ -59,6 +76,5 @@ function activate(context) {
 }
 exports.activate = activate;
 
-// this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 exports.deactivate = deactivate;

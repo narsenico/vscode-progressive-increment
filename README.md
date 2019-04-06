@@ -4,7 +4,7 @@ VSCode extension
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/narsenico/vscode-progressive-increment/blob/master/LICENSE)
 
-Increments numeric values found in selection(s) by 1 or 10.
+Increments progressively integer values found in selection(s) by 1 or 10.
 
 ![screenshot](demo.gif)
 

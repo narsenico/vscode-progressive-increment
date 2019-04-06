@@ -1,7 +1,7 @@
 {
     "name": "vscode-progressive-increment",
     "displayName": "VSCode Progressive Increment",
-    "description": "Increments numeric values found in selection",
+    "description": "Increments progressively integer values found in selection(s) by 1 or 10",
     "version": "1.0.0",
     "publisher": "narsenico",
     "icon": "icon.png",
@@ -65,7 +65,6 @@
         "@types/mocha": "^2.2.42",
         "@types/node": "^8.10.25",
         "eslint": "^5.16.0",
-        "typescript": "^2.6.1",
         "vscode": "^1.1.33",
         "webpack": "^4.29.6",
         "webpack-cli": "^3.3.0"

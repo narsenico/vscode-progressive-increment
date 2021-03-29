@@ -31,7 +31,7 @@ async function selectAllAndIncrements(testfile, expectedfile) {
     const inputText = await fs.readFile(testfile, 'utf8');
     const expectedText = await fs.readFile(expectedfile, 'utf8');
     const document = await vscode.workspace.openTextDocument();
-    const editor = await vscode.window.showTextDocument(document)
+    const editor = await vscode.window.showTextDocument(document);
     await editor.edit(editBuilder => editBuilder.insert(new vscode.Position(0, 0), inputText));
     // mi assicuro che l'editor del documento sia quello attivo
     assert.deepEqual(editor, vscode.window.activeTextEditor);

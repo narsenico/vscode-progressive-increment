@@ -76,11 +76,16 @@ function execIncrementBy(increment, options = { skipFirstSelection: false }) {
     }
 }
 
-function readOptions(options) {
-    const { skipFirstSelection } = vscode.workspace.getConfiguration(
+function readOptions({ skipFirstSelection }) {
+    const config = vscode.workspace.getConfiguration(
         'progressive'
     );
-    return Object.assign({ skipFirstSelection }, options);
+    return {
+        skipFirstSelection:
+            skipFirstSelection === undefined
+                ? config.skipFirstSelection
+                : skipFirstSelection,
+    };
 }
 
 // this method is called when your extension is activated
@@ -93,14 +98,14 @@ function activate(context) {
         vscode.commands.registerCommand(
             'progressive.incrementBy1',
             (skipFirstSelection) =>
-                execIncrementBy(1, readOptions({ skipFirstSelection }))
+                execIncrementBy(1, readOptions({skipFirstSelection}))
         )
     );
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'progressive.incrementBy10',
             (skipFirstSelection) =>
-                execIncrementBy(10, readOptions({ skipFirstSelection }))
+                execIncrementBy(10, readOptions({skipFirstSelection}))
         )
     );
 }

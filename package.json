@@ -2,7 +2,7 @@
     "name": "vscode-progressive-increment",
     "displayName": "VSCode Progressive Increment",
     "description": "Increments progressively integer values found in selection(s) by 1 or 10",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "publisher": "narsenico",
     "icon": "icon.png",
     "engines": {
@@ -50,7 +50,17 @@
                 "mac": "cmd+alt+shift+i",
                 "when": "editorTextFocus"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "VSCode Progressive Increment",
+            "properties": {
+                "progressive.skipFirstSelection": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Skip first number in selection"
+                }
+            }
+        }
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",

@@ -40,7 +40,7 @@ async function selectAllAndIncrements(testfile, expectedfile) {
     // incremento tutti i numeri trovati nella selezione di 1
     await vscode.commands.executeCommand(
         'progressive.incrementBy1',
-        hasSkipFirstSelection(inputText)
+        hasSkipFirstNumber(inputText)
     );
     // verifico che il testo modificato sia corretto
     const text = editor.document.getText();
@@ -69,7 +69,7 @@ async function splitSelectionAndIncrements(testfile, expectedfile) {
     // incremento tutti i numeri trovati nella selezione di 1
     await vscode.commands.executeCommand(
         'progressive.incrementBy1',
-        hasSkipFirstSelection(inputText)
+        hasSkipFirstNumber(inputText)
     );
     // verifico che il testo modificato sia corretto
     const text = editor.document.getText();
@@ -77,8 +77,8 @@ async function splitSelectionAndIncrements(testfile, expectedfile) {
     assert.equal(text, expectedText);
 }
 
-function hasSkipFirstSelection(text) {
-    return /^##.*skipFirstSelection.*\n/i.test(text);
+function hasSkipFirstNumber(text) {
+    return /^##.*skipFirstNumber.*\n/i.test(text);
 }
 
 async function exec(fn) {

@@ -19,17 +19,17 @@ const vscode = require('vscode');
  * Es: 00 00 00 => 01 02 03
  * Es: 0 10 12 => 1 02 03
  *
- * Se è attiva l'opzione skipFirstSelection il primo numero trovato nelle selezioni non viene incrementato,
+ * Se è attiva l'opzione skipFirstNumber il primo numero trovato nelle selezioni non viene incrementato,
  * ma viene comunque considerato come valore iniziale per incrementare i successivi numeri.
  * Es: 0 0 0 => 0 1 2
  *
  * @param {number} increment valore numerico di incremento
  * @param {object} options opzioni
- * - skipFirstSelection: il primo numero non viene incrementato
+ * - skipFirstNumber: il primo numero non viene incrementato
  * @returns {Promise|undefined} ritorna una promessa se ci sono delle selezioni
  * in cui eseguire l'opearazione, altirmenti undefined
  */
-function execIncrementBy(increment, options = { skipFirstSelection: false }) {
+function execIncrementBy(increment, options = { skipFirstNumber: false }) {
     const editor = vscode.window.activeTextEditor;
     if (editor && editor.selections && editor.selections.length > 0) {
         return editor
@@ -46,7 +46,7 @@ function execIncrementBy(increment, options = { skipFirstSelection: false }) {
                         if (refValue === undefined) {
                             refValue = +nn;
                             // se devo skippare il primo valore esco subito
-                            if (options.skipFirstSelection) {
+                            if (options.skipFirstNumber) {
                                 return nn;
                             }
                         }
@@ -76,15 +76,13 @@ function execIncrementBy(increment, options = { skipFirstSelection: false }) {
     }
 }
 
-function readOptions({ skipFirstSelection }) {
-    const config = vscode.workspace.getConfiguration(
-        'progressive'
-    );
+function readOptions({ skipFirstNumber }) {
+    const config = vscode.workspace.getConfiguration('progressive');
     return {
-        skipFirstSelection:
-            skipFirstSelection === undefined
-                ? config.skipFirstSelection
-                : skipFirstSelection,
+        skipFirstNumber:
+            skipFirstNumber === undefined
+                ? config.skipFirstNumber
+                : skipFirstNumber,
     };
 }
 
@@ -97,15 +95,15 @@ function activate(context) {
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'progressive.incrementBy1',
-            (skipFirstSelection) =>
-                execIncrementBy(1, readOptions({skipFirstSelection}))
+            (skipFirstNumber) =>
+                execIncrementBy(1, readOptions({ skipFirstNumber }))
         )
     );
     context.subscriptions.push(
         vscode.commands.registerCommand(
             'progressive.incrementBy10',
-            (skipFirstSelection) =>
-                execIncrementBy(10, readOptions({skipFirstSelection}))
+            (skipFirstNumber) =>
+                execIncrementBy(10, readOptions({ skipFirstNumber }))
         )
     );
 }

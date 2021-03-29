@@ -54,7 +54,7 @@
         "configuration": {
             "title": "VSCode Progressive Increment",
             "properties": {
-                "progressive.skipFirstSelection": {
+                "progressive.skipFirstNumber": {
                     "type": "boolean",
                     "default": false,
                     "description": "Skip first number in selection"

@@ -23,9 +23,9 @@ function sleep(ms) {
 
 /**
  * Seleziona tutto il contenuto del file ed esegue l'incremento.
- * 
- * @param {String} testfile 
- * @param {String} expectedfile 
+ *
+ * @param {String} testfile
+ * @param {String} expectedfile
  */
 async function selectAllAndIncrements(testfile, expectedfile) {
     const inputText = await fs.readFile(testfile, 'utf8');
@@ -38,7 +38,10 @@ async function selectAllAndIncrements(testfile, expectedfile) {
     // seleziono tutto
     await vscode.commands.executeCommand("editor.action.selectAll");
     // incremento tutti i numeri trovati nella selezione di 1
-    await vscode.commands.executeCommand("progressive.incrementBy1");
+    await vscode.commands.executeCommand(
+        'progressive.incrementBy1',
+        hasSkipFirstSelection(inputText)
+    );
     // verifico che il testo modificato sia corretto
     const text = editor.document.getText();
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
@@ -47,9 +50,9 @@ async function selectAllAndIncrements(testfile, expectedfile) {
 
 /**
  * Seleziona riga per riga ed esegue l'incremento.
- * 
- * @param {String} testfile 
- * @param {String} expectedfile 
+ *
+ * @param {String} testfile
+ * @param {String} expectedfile
  */
 async function splitSelectionAndIncrements(testfile, expectedfile) {
     const inputText = await fs.readFile(testfile, 'utf8');
@@ -64,11 +67,18 @@ async function splitSelectionAndIncrements(testfile, expectedfile) {
     await vscode.commands.executeCommand("editor.action.insertCursorAtEndOfEachLineSelected");
     await vscode.commands.executeCommand("cursorHomeSelect");
     // incremento tutti i numeri trovati nella selezione di 1
-    await vscode.commands.executeCommand("progressive.incrementBy1");
+    await vscode.commands.executeCommand(
+        'progressive.incrementBy1',
+        hasSkipFirstSelection(inputText)
+    );
     // verifico che il testo modificato sia corretto
     const text = editor.document.getText();
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     assert.equal(text, expectedText);
+}
+
+function hasSkipFirstSelection(text) {
+    return /^##.*skipFirstSelection.*\n/i.test(text);
 }
 
 async function exec(fn) {

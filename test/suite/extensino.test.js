@@ -1,25 +1,9 @@
 /* global suite, test */
 
-//
-// Note: This example test is leveraging the Mocha test framework.
-// Please refer to their documentation on https://mochajs.org/ for help.
-//
-
-// The module 'assert' provides assertion methods from node
 const assert = require('assert');
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs').promises;
-// const myExtension = require('../extension');
-
-function sleep(ms) {
-    return new Promise(resolve => {
-        setTimeout(resolve, ms)
-    })
-}
 
 /**
  * Seleziona tutto il contenuto del file ed esegue l'incremento.
@@ -29,23 +13,24 @@ function sleep(ms) {
  */
 async function selectAllAndIncrements(testfile, expectedfile) {
     const inputText = await fs.readFile(testfile, 'utf8');
-    const expectedText = await fs.readFile(expectedfile, 'utf8');
+	const skipFirstNumber = hasSkipFirstNumber(inputText);
+    const expectedText = normalizeText(await fs.readFile(expectedfile, 'utf8'));
     const document = await vscode.workspace.openTextDocument();
     const editor = await vscode.window.showTextDocument(document);
     await editor.edit(editBuilder => editBuilder.insert(new vscode.Position(0, 0), inputText));
     // mi assicuro che l'editor del documento sia quello attivo
-    assert.deepEqual(editor, vscode.window.activeTextEditor);
+    assert.deepStrictEqual(editor, vscode.window.activeTextEditor);
     // seleziono tutto
     await vscode.commands.executeCommand("editor.action.selectAll");
     // incremento tutti i numeri trovati nella selezione di 1
     await vscode.commands.executeCommand(
         'progressive.incrementBy1',
-        hasSkipFirstNumber(inputText)
+        skipFirstNumber
     );
     // verifico che il testo modificato sia corretto
-    const text = editor.document.getText();
+    const text = normalizeText(editor.document.getText());
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-    assert.equal(text, expectedText);
+    assert.strictEqual(text, expectedText, `File: '${testfile}' skipFirstNumber=${skipFirstNumber}`);
 }
 
 /**
@@ -56,12 +41,13 @@ async function selectAllAndIncrements(testfile, expectedfile) {
  */
 async function splitSelectionAndIncrements(testfile, expectedfile) {
     const inputText = await fs.readFile(testfile, 'utf8');
-    const expectedText = await fs.readFile(expectedfile, 'utf8');
+	const skipFirstNumber = hasSkipFirstNumber(inputText);
+    const expectedText = normalizeText(await fs.readFile(expectedfile, 'utf8'));
     const document = await vscode.workspace.openTextDocument();
     const editor = await vscode.window.showTextDocument(document);
     await editor.edit(editBuilder => editBuilder.insert(new vscode.Position(0, 0), inputText));
     // mi assicuro che l'editor del documento sia quello attivo
-    assert.deepEqual(editor, vscode.window.activeTextEditor);
+    assert.deepStrictEqual(editor, vscode.window.activeTextEditor);
     // seleziono tutto e splitto la selezione su ogni riga
     await vscode.commands.executeCommand("editor.action.selectAll");
     await vscode.commands.executeCommand("editor.action.insertCursorAtEndOfEachLineSelected");
@@ -69,16 +55,20 @@ async function splitSelectionAndIncrements(testfile, expectedfile) {
     // incremento tutti i numeri trovati nella selezione di 1
     await vscode.commands.executeCommand(
         'progressive.incrementBy1',
-        hasSkipFirstNumber(inputText)
+        skipFirstNumber
     );
     // verifico che il testo modificato sia corretto
-    const text = editor.document.getText();
+    const text = normalizeText(editor.document.getText());
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
-    assert.equal(text, expectedText);
+    assert.strictEqual(text, expectedText, `File: '${testfile}' skipFirstNumber=${skipFirstNumber}`);
 }
 
 function hasSkipFirstNumber(text) {
     return /^##.*skipFirstNumber.*\n/i.test(text);
+}
+
+function normalizeText(text) {
+	return text ? text.replace(/\r\n/g, '\n') : '';
 }
 
 async function exec(fn) {
@@ -89,19 +79,13 @@ async function exec(fn) {
     const folder = path.join(__dirname, "cases");
     const list = await fs.readdir(folder);
     for (const testfile of list.filter(f => rgTestExt.test(f))) {
+		// if (!/test1_skipfirst/.test(testfile)) continue;
         const expectedfile = path.join(folder, testfile.replace(rgTestExt, '.expected'));
         await fn(path.join(folder, testfile), expectedfile);
     }
 }
 
-// Defines a Mocha test suite to group tests of similar kind together
-suite("Extension Tests", function () {
-
-    // Defines a Mocha unit test
-    test("Select all and increments by 1", async function () {
-        await exec(selectAllAndIncrements);
-    });
-    test("Split into selections and increments by 1", async function () {
-        await exec(splitSelectionAndIncrements);
-    });
+suite('Extension Tests', function () {
+    test('Select all and increments by 1', async () => await exec(selectAllAndIncrements));
+    test('Split into selections and increments by 1', async () => await exec(splitSelectionAndIncrements));
 });

@@ -1,7 +1,9 @@
 # Change Log
-All notable changes to the "progressive-increment" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 ## [Unreleased]
-- Initial release
+
+## [1.0.2] - 2021-03-31
+### Added
+- New configuration "progressive.skipFirstNumber"
+### Changed
+- Update VS Code engine to 1.54.0
